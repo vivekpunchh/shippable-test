@@ -1,0 +1,39 @@
+language: go
+
+go:
+  - 1.11
+
+branches:
+  only:
+    - master
+
+env:
+  global:
+    - DOCKER_ACC=punchh
+    - DOCKER_REPO=shippable-cdp
+
+resources:
+  - name: docker_image_punchhgin
+    type: image
+    integration: "Creds-DockerRegistry-Punchh"
+    versionTemplate:
+      sourceName: "punchh/shippable-punchhgin"
+      versionName: "latest"
+
+build:
+  ci:
+    - cd ..
+    - mkdir src
+    - mv cdp src
+    - apt-get install golang
+    - export GOPATH=$(pwd) GOBIN=$(pwd)
+    - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+    - cd src/cdp
+    - rm -rvf .vendor-new
+    - $GOBIN/dep ensure
+
+jobs:
+  - name: punchhgin_runCI
+    type: runCI
+    steps:
+      - OUT: docker_image_punchhgin
