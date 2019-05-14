@@ -9,15 +9,23 @@ branches:
 
 env:
   global:
-    - ROOT=$SHIPPABLE_BUILD_DIR/src
+    - DOCKER_ACC=punchh
+    - DOCKER_REPO=shippable-cdp
 
 build:
   ci:
-    - cd $ROOT
+    - cd ..
+    - mkdir src
+    - mv cdp src
+    - apt-get install golang
+    - export GOPATH=$(pwd) GOBIN=$(pwd)
+    - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+    - cd src/cdp
+  post_ci:
     - go run main.go
 
 jobs:
-  - name: shippable_test
+  - name: shippable-test
     type: runCI
     steps:
-      - OUT: shippable_test
+      - OUT: shippable-test
