@@ -22,6 +22,7 @@ build:
     - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
     - cd src/shippable-test
   post_ci:
+    - go get github.com/gin-gonic/gin
     - go run main.go
 
 jobs:
