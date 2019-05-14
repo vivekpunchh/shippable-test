@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - 1.11
+  - 1.12
 
 branches:
   only:
@@ -16,11 +16,11 @@ build:
   ci:
     - cd ..
     - mkdir src
-    - mv cdp src
+    - mv shippable-test src
     - apt-get install golang
     - export GOPATH=$(pwd) GOBIN=$(pwd)
     - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-    - cd src/cdp
+    - cd src/shippable-test
   post_ci:
     - go run main.go
 
